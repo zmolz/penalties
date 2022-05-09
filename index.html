@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>src</title>
+<title>index</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13189,10 +13189,66 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">re</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="How-Much-Does-Vegas-Influence-Football-Games?">How Much Does Vegas Influence Football Games?<a class="anchor-link" href="#How-Much-Does-Vegas-Influence-Football-Games?">&#182;</a></h1>
+<h1 id="PREMISE">PREMISE<a class="anchor-link" href="#PREMISE">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I'm sure we all know someone who's go to excuse is "[insert team here] vs Refs", or a sarcastic "I wonder who Vegas has in this one", when their favorite team loses a game. I know its hard to accept when your team has been flat out beat, but with data science we can actually analyze and see if refs tend to favorite the Vegas-backed team, and if refs really do impact games in significant way.</p>
+<p>What we are going to do in this tutorial to start, is scrape data on NFL games - which referee reffed it, the moneyline and other betting lines, the play-by-play, who was home and who was away, etc.</p>
+<p>Once we get all the data we need in a tidy manner, and analyze it, we will be able to answer a lot of questions about refs tendencies, and you will be able to tell that friend either to just accept the loss, or that he has a legitimate claim.</p>
+<p>Some good questions to look at are</p>
+<ol>
+<li>When the favorited team goes behind, do the refs call more penalties on the opposing team</li>
+<li>Do certain refs tend to favor certain calls, or certain teams</li>
+<li>...</li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="DATA-COLLECTION">DATA COLLECTION<a class="anchor-link" href="#DATA-COLLECTION">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>What we want to do is first collect all the data we need, via webscraping with BeautifulSoup and Requests, and then storing all the data in a Pandas dataframe.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here, I have already downloaded an excel sheet from <a href="https://www.sportsbookreviewsonline.com/scoresoddsarchives/nfl/nfloddsarchives.html">https://www.sportsbookreviewsonline.com/scoresoddsarchives/nfl/nfloddsarchives.html</a></p>
+<p>We read it into an excel-sheet like data type called a Dataframe, from the Pandas module. (<a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html</a>)</p>
+
 </div>
 </div>
 </div>
@@ -13201,7 +13257,281 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="s1">&#39;hello world&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">gamedata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;nflodds.xlsx&#39;</span><span class="p">)</span>
+<span class="n">gamedata</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[&nbsp;]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Rot</th>
+      <th>VH</th>
+      <th>Team</th>
+      <th>1st</th>
+      <th>2nd</th>
+      <th>3rd</th>
+      <th>4th</th>
+      <th>Final</th>
+      <th>Open</th>
+      <th>Close</th>
+      <th>ML</th>
+      <th>2H</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>909</td>
+      <td>451</td>
+      <td>V</td>
+      <td>Dallas</td>
+      <td>7</td>
+      <td>9</td>
+      <td>10</td>
+      <td>3</td>
+      <td>29</td>
+      <td>52.5</td>
+      <td>52.5</td>
+      <td>375</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>909</td>
+      <td>452</td>
+      <td>H</td>
+      <td>TampaBay</td>
+      <td>7</td>
+      <td>14</td>
+      <td>7</td>
+      <td>3</td>
+      <td>31</td>
+      <td>7</td>
+      <td>10</td>
+      <td>-450</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>912</td>
+      <td>453</td>
+      <td>V</td>
+      <td>Pittsburgh</td>
+      <td>0</td>
+      <td>0</td>
+      <td>6</td>
+      <td>17</td>
+      <td>23</td>
+      <td>51</td>
+      <td>47.5</td>
+      <td>240</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>912</td>
+      <td>454</td>
+      <td>H</td>
+      <td>Buffalo</td>
+      <td>3</td>
+      <td>7</td>
+      <td>0</td>
+      <td>6</td>
+      <td>16</td>
+      <td>7</td>
+      <td>7</td>
+      <td>-280</td>
+      <td>21.5</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>912</td>
+      <td>455</td>
+      <td>V</td>
+      <td>NYJets</td>
+      <td>0</td>
+      <td>0</td>
+      <td>8</td>
+      <td>6</td>
+      <td>14</td>
+      <td>43.5</td>
+      <td>44.5</td>
+      <td>160</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>565</th>
+      <td>130</td>
+      <td>322</td>
+      <td>H</td>
+      <td>KansasCity</td>
+      <td>7</td>
+      <td>14</td>
+      <td>0</td>
+      <td>3</td>
+      <td>24</td>
+      <td>7</td>
+      <td>7</td>
+      <td>-310</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>566</th>
+      <td>130</td>
+      <td>323</td>
+      <td>V</td>
+      <td>SanFrancisco</td>
+      <td>0</td>
+      <td>10</td>
+      <td>7</td>
+      <td>0</td>
+      <td>17</td>
+      <td>47.5</td>
+      <td>45.5</td>
+      <td>170</td>
+      <td>23.5</td>
+    </tr>
+    <tr>
+      <th>567</th>
+      <td>130</td>
+      <td>324</td>
+      <td>H</td>
+      <td>LARams</td>
+      <td>0</td>
+      <td>7</td>
+      <td>0</td>
+      <td>13</td>
+      <td>20</td>
+      <td>3</td>
+      <td>-3.5</td>
+      <td>-180</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <th>568</th>
+      <td>213</td>
+      <td>101</td>
+      <td>N</td>
+      <td>LARams</td>
+      <td>7</td>
+      <td>6</td>
+      <td>3</td>
+      <td>7</td>
+      <td>23</td>
+      <td>4</td>
+      <td>4</td>
+      <td>-200</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <th>569</th>
+      <td>213</td>
+      <td>102</td>
+      <td>N</td>
+      <td>Cincinnati</td>
+      <td>3</td>
+      <td>7</td>
+      <td>10</td>
+      <td>0</td>
+      <td>20</td>
+      <td>50</td>
+      <td>48.5</td>
+      <td>185</td>
+      <td>24</td>
+    </tr>
+  </tbody>
+</table>
+<p>570 rows × 13 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This data contains information on games, and the moneyline, opening, halftime, and closing lines for a game.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>What we now want to do now is scrape data for the play-by-play so we can see exactly when every single flag was thrown. The website we are scraping from, <a href="https://www.nflpenalties.com/all-referees.php?year=2021">https://www.nflpenalties.com/all-referees.php?year=2021</a>, contains links to each referees individual page. To analyze webpages, you don't need to know anything about HTML except how to  press right-click inspect and look through the HTML for what you want, and then utilize BeautifulSoup (<a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/">https://www.crummy.com/software/BeautifulSoup/bs4/doc/</a>) and Regular Expressions to extract the information you want. BeautifulSoup parses the content returned by a request sent through the requests module, and turns it into something that you can use to search for specific elements of HTML.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;https://www.nflpenalties.com/all-referees.php?year=2021&#39;</span>
+<span class="n">PREFIX</span> <span class="o">=</span> <span class="s1">&#39;https://www.nflpenalties.com&#39;</span>
+<span class="n">page</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span>
+<span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+
+<span class="n">elts</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">href</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">match_referee</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&lt;a href=&quot;(/referee/.*)&quot;&gt;(.*)&lt;&#39;</span><span class="p">)</span>
+<span class="n">ref_to_games</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">elts</span><span class="p">:</span> 
+    <span class="k">if</span> <span class="n">ref</span> <span class="p">:</span><span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">match_referee</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">elt</span><span class="p">)):</span>
+        <span class="n">ref_to_games</span><span class="p">[</span><span class="n">ref</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PREFIX</span><span class="o">+</span><span class="n">ref</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        
+<span class="n">ref_to_games</span><span class="p">[</span><span class="s1">&#39;Adrian Hill&#39;</span><span class="p">]</span>
 </pre></div>
 
     </div>
@@ -13220,7 +13550,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;hello world&#39;</pre>
+<pre>&#39;https://www.nflpenalties.com/referee/adrian-hill?year=2021&#39;</pre>
 </div>
 
 </div>
@@ -13228,6 +13558,297 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Utilizing BeautifulSoup, the re module, and requests, we create a python dictionary, ref_to_games, that maps a referee to their webpage's link, as shown above.</p>
+<p>From there, we then have to search through each link and see where that takes us. Looking at the HTML for the pages, I noticed that there is a link to every single game refereed by that ref. From there, we now the next step is to extract those links for each referee.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">match_game</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&lt;a href=&quot;(/game/.*)&quot;&gt;&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">ref_to_games</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">games</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+    <span class="n">elts</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">href</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">elts</span><span class="p">:</span> 
+        <span class="k">if</span> <span class="n">game</span> <span class="p">:</span><span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">match_game</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">elt</span><span class="p">)):</span>
+            <span class="n">games</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PREFIX</span><span class="o">+</span><span class="n">game</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">ref_to_games</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">games</span>
+    
+<span class="n">ref_to_games</span><span class="p">[</span><span class="s1">&#39;Adrian Hill&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[&nbsp;]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;https://www.nflpenalties.com/game/minnesota-vikings-at-cincinnati-bengals-09-12-2021&#39;,
+ &#39;https://www.nflpenalties.com/game/detroit-lions-at-green-bay-packers-09-20-2021&#39;,
+ &#39;https://www.nflpenalties.com/game/atlanta-falcons-at-new-york-giants-09-26-2021&#39;,
+ &#39;https://www.nflpenalties.com/game/tennessee-titans-at-new-york-jets-10-03-2021&#39;,
+ &#39;https://www.nflpenalties.com/game/kansas-city-chiefs-at-washington-football-team-10-17-2021&#39;,
+ &#39;https://www.nflpenalties.com/game/denver-broncos-at-cleveland-browns-10-21-2021&#39;,
+ &#39;https://www.nflpenalties.com/game/jacksonville-jaguars-at-seattle-seahawks-10-31-2021&#39;,
+ &#39;https://www.nflpenalties.com/game/houston-texans-at-miami-dolphins-11-07-2021&#39;,
+ &#39;https://www.nflpenalties.com/game/carolina-panthers-at-arizona-cardinals-11-14-2021&#39;,
+ &#39;https://www.nflpenalties.com/game/chicago-bears-at-detroit-lions-11-25-2021&#39;,
+ &#39;https://www.nflpenalties.com/game/washington-football-team-at-las-vegas-raiders-12-05-2021&#39;,
+ &#39;https://www.nflpenalties.com/game/seattle-seahawks-at-houston-texans-12-12-2021&#39;,
+ &#39;https://www.nflpenalties.com/game/cincinnati-bengals-at-denver-broncos-12-19-2021&#39;,
+ &#39;https://www.nflpenalties.com/game/miami-dolphins-at-new-orleans-saints-12-27-2021&#39;,
+ &#39;https://www.nflpenalties.com/game/jacksonville-jaguars-at-new-england-patriots-01-02-2022&#39;,
+ &#39;https://www.nflpenalties.com/game/washington-football-team-at-new-york-giants-01-09-2022&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this code, we have updated the ref_to_games dictionary to map each referee to all links to the play-by-plays for the games that they refereed, as shown above.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, we have to go to through those links, and extract the play-by-play for each game.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">links</span> <span class="ow">in</span> <span class="n">ref_to_games</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">games</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+        <span class="n">games</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">(</span><span class="n">link</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span><span class="s1">&#39;standard&#39;</span><span class="p">})[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">ref_to_games</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">games</span>
+    
+<span class="n">ref_to_games</span><span class="p">[</span><span class="s1">&#39;Adrian Hill&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[&nbsp;]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MIN</th>
+      <th>CIN</th>
+      <th>Poss</th>
+      <th>Time</th>
+      <th>Down</th>
+      <th>Distance</th>
+      <th>Yardline</th>
+      <th>Play</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+      <td>CIN</td>
+      <td>Q1 15:00</td>
+      <td>0</td>
+      <td>0</td>
+      <td>CIN 35</td>
+      <td>2-E.McPherson kicks 65 yards from CIN 35 to en...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>0</td>
+      <td>MIN</td>
+      <td>Q1 15:00</td>
+      <td>1</td>
+      <td>10</td>
+      <td>MIN 25</td>
+      <td>(15:00) PENALTY on MIN-30-C.Ham, False Start, ...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>0</td>
+      <td>MIN</td>
+      <td>Q1 15:00</td>
+      <td>1</td>
+      <td>15</td>
+      <td>MIN 20</td>
+      <td>(15:00) 8-K.Cousins pass short right to 33-D.C...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>0</td>
+      <td>MIN</td>
+      <td>Q1 14:25</td>
+      <td>2</td>
+      <td>6</td>
+      <td>MIN 29</td>
+      <td>(14:25) PENALTY on MIN-83-T.Conklin, False Sta...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>0</td>
+      <td>MIN</td>
+      <td>Q1 14:10</td>
+      <td>2</td>
+      <td>11</td>
+      <td>MIN 24</td>
+      <td>(14:10) 8-K.Cousins pass short middle to 83-T....</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>235</th>
+      <td>24</td>
+      <td>24</td>
+      <td>CIN</td>
+      <td>Q5 00:06</td>
+      <td>2</td>
+      <td>5</td>
+      <td>MIN 15</td>
+      <td>(:06) 9-J.Burrow spiked the ball to stop the c...</td>
+    </tr>
+    <tr>
+      <th>236</th>
+      <td>24</td>
+      <td>24</td>
+      <td>NaN</td>
+      <td>Q5 00:05</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>Timeout #1 by MIN at 00:05.</td>
+    </tr>
+    <tr>
+      <th>237</th>
+      <td>24</td>
+      <td>27</td>
+      <td>CIN</td>
+      <td>Q5 00:05</td>
+      <td>3</td>
+      <td>5</td>
+      <td>MIN 15</td>
+      <td>(:05) 2-E.McPherson 38 yard field goal is GOOD...</td>
+    </tr>
+    <tr>
+      <th>238</th>
+      <td>MIN</td>
+      <td>CIN</td>
+      <td>Poss</td>
+      <td>Time</td>
+      <td>Down</td>
+      <td>Distance</td>
+      <td>Yardline</td>
+      <td>Play</td>
+    </tr>
+    <tr>
+      <th>239</th>
+      <td>24</td>
+      <td>27</td>
+      <td>NaN</td>
+      <td>Q5 00:00</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>END GAME</td>
+    </tr>
+  </tbody>
+</table>
+<p>240 rows × 8 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>These few lines of code take a while to run, upwards of 2 minutes on my laptop to iterate through every NFL game played in a season, but after they run we have successfully updated ref_to_games dictionary to map referees to a list of Dataframes of play-by-play information for each game the referee coached. At this point we have finished scraping our data, and we have successfully stored the play-by-play for every single game in the season.</p>
+<p>Printed above is the first game refereed by Adrian Hill in the 2021 season, <code>ref_to_games[name][i]</code> corresponds to the <code>(i+1)th game</code> coached by <code>name</code></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="DATA-PROCESSING">DATA PROCESSING<a class="anchor-link" href="#DATA-PROCESSING">&#182;</a></h2>
+</div>
+</div>
 </div>
     </div>
   </div>
