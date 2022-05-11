@@ -13234,8 +13234,9 @@ div#notebook {
 <ol>
 <li>When the favorited team goes behind, do the refs call more penalties on the opposing team</li>
 <li>Do certain refs tend to favor certain calls, or certain teams</li>
-<li>...</li>
+<li>At what percentage do teams that get more penalties win</li>
 </ol>
+<p>Things like that are perfect for a Data Science analysis.</p>
 
 </div>
 </div>
@@ -14356,7 +14357,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ref_to_games</span><span class="p">[</span><span class="s1">&#39;John Hussey&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">ref_to_games</span><span class="p">[</span><span class="s1">&#39;Adrian Hill&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span> <span class="c1"># adrian hills dataframe is correctly formatted</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ref_to_games</span><span class="p">[</span><span class="s1">&#39;John Hussey&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">ref_to_games</span><span class="p">[</span><span class="s1">&#39;Adrian Hill&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
 </pre></div>
 
     </div>
@@ -15375,12 +15376,11 @@ div#notebook {
     <span class="n">called_on</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;V&#39;</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Called On&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;H&#39;</span><span class="p">)</span>
     <span class="n">poss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;V&#39;</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Poss&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;H&#39;</span><span class="p">)</span>
 
-<span class="k">del</span> <span class="n">penalty_frame</span><span class="p">[</span><span class="s1">&#39;Called On&#39;</span><span class="p">]</span> <span class="c1"># I keep getting a warning for trying to edit a copy when i do frame[x] = x so.</span>
 <span class="k">del</span> <span class="n">penalty_frame</span><span class="p">[</span><span class="s1">&#39;Poss&#39;</span><span class="p">]</span>
 <span class="k">del</span> <span class="n">penalty_frame</span><span class="p">[</span><span class="s1">&#39;Yardline&#39;</span><span class="p">]</span>
 
-<span class="n">penalty_frame</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Called On&#39;</span><span class="p">,</span> <span class="n">called_on</span><span class="p">)</span>
-<span class="n">penalty_frame</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Poss&#39;</span><span class="p">,</span>  <span class="n">poss</span><span class="p">)</span>
+<span class="n">penalty_frame</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Called On V/H&#39;</span><span class="p">,</span> <span class="n">called_on</span><span class="p">)</span>
+<span class="n">penalty_frame</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;Poss&#39;</span><span class="p">,</span>  <span class="n">poss</span><span class="p">)</span>
 
 <span class="n">penalty_frame</span>
 </pre></div>
@@ -15419,6 +15419,7 @@ div#notebook {
     <tr style="text-align: right;">
       <th></th>
       <th>Penalty</th>
+      <th>Called On V/H</th>
       <th>Called On</th>
       <th>Quarter</th>
       <th>Time</th>
@@ -15439,6 +15440,7 @@ div#notebook {
       <th>1</th>
       <td>False Start</td>
       <td>V</td>
+      <td>MIN</td>
       <td>1</td>
       <td>15:00</td>
       <td>Adrian Hill</td>
@@ -15456,6 +15458,7 @@ div#notebook {
       <th>3</th>
       <td>False Start</td>
       <td>V</td>
+      <td>MIN</td>
       <td>1</td>
       <td>14:25</td>
       <td>Adrian Hill</td>
@@ -15473,6 +15476,7 @@ div#notebook {
       <th>7</th>
       <td>False Start</td>
       <td>V</td>
+      <td>MIN</td>
       <td>1</td>
       <td>12:30</td>
       <td>Adrian Hill</td>
@@ -15490,6 +15494,7 @@ div#notebook {
       <th>8</th>
       <td>Offensive Holding</td>
       <td>V</td>
+      <td>MIN</td>
       <td>1</td>
       <td>12:16</td>
       <td>Adrian Hill</td>
@@ -15507,6 +15512,7 @@ div#notebook {
       <th>55</th>
       <td>False Start</td>
       <td>V</td>
+      <td>MIN</td>
       <td>2</td>
       <td>09:33</td>
       <td>Adrian Hill</td>
@@ -15536,11 +15542,13 @@ div#notebook {
       <td>...</td>
       <td>...</td>
       <td>...</td>
+      <td>...</td>
     </tr>
     <tr>
       <th>151</th>
       <td>False Start</td>
       <td>H</td>
+      <td>SEA</td>
       <td>4</td>
       <td>14:14</td>
       <td>Tony Corrente</td>
@@ -15558,6 +15566,7 @@ div#notebook {
       <th>158</th>
       <td>Defensive Holding</td>
       <td>H</td>
+      <td>SEA</td>
       <td>4</td>
       <td>12:36</td>
       <td>Tony Corrente</td>
@@ -15575,6 +15584,7 @@ div#notebook {
       <th>6</th>
       <td>Neutral Zone Infraction</td>
       <td>H</td>
+      <td>TB</td>
       <td>1</td>
       <td>12:17</td>
       <td>Tony Corrente</td>
@@ -15592,6 +15602,7 @@ div#notebook {
       <th>51</th>
       <td>Defensive Holding</td>
       <td>H</td>
+      <td>TB</td>
       <td>2</td>
       <td>11:09</td>
       <td>Tony Corrente</td>
@@ -15609,6 +15620,7 @@ div#notebook {
       <th>69</th>
       <td>Offensive Pass Interference</td>
       <td>V</td>
+      <td>CAR</td>
       <td>2</td>
       <td>03:32</td>
       <td>Tony Corrente</td>
@@ -15624,7 +15636,7 @@ div#notebook {
     </tr>
   </tbody>
 </table>
-<p>3335 rows × 14 columns</p>
+<p>3335 rows × 15 columns</p>
 </div>
 </div>
 
@@ -15666,8 +15678,8 @@ div#notebook {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
 
 <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Away&#39;</span><span class="p">,</span> <span class="s1">&#39;Home&#39;</span><span class="p">]</span>
-<span class="n">vs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">penalty_frame</span><span class="p">[</span><span class="s1">&#39;Called On&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">==</span><span class="s1">&#39;V&#39;</span><span class="p">)</span>
-<span class="n">hs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">penalty_frame</span><span class="p">[</span><span class="s1">&#39;Called On&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">==</span><span class="s1">&#39;H&#39;</span><span class="p">)</span>
+<span class="n">vs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">penalty_frame</span><span class="p">[</span><span class="s1">&#39;Called On V/H&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">==</span><span class="s1">&#39;V&#39;</span><span class="p">)</span>
+<span class="n">hs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">penalty_frame</span><span class="p">[</span><span class="s1">&#39;Called On V/H&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">==</span><span class="s1">&#39;H&#39;</span><span class="p">)</span>
 <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">vs</span><span class="p">,</span> <span class="n">hs</span><span class="p">]</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">width</span><span class="o">=.</span><span class="mi">4</span><span class="p">)</span>
 
@@ -15723,8 +15735,9 @@ div#notebook {
 
 <span class="n">by_ref</span> <span class="o">=</span> <span class="n">penalty_frame</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Ref&#39;</span><span class="p">)</span>
 
-<span class="n">aways_y</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">penalties</span><span class="p">[</span><span class="s1">&#39;Called On&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">==</span><span class="s1">&#39;V&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">penalties</span> <span class="ow">in</span> <span class="n">by_ref</span><span class="p">]</span>
-<span class="n">homes_y</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">penalties</span><span class="p">[</span><span class="s1">&#39;Called On&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">==</span><span class="s1">&#39;H&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">penalties</span> <span class="ow">in</span> <span class="n">by_ref</span><span class="p">]</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="mf">17.</span><span class="p">)</span>
+<span class="n">aways_y</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">penalties</span><span class="p">[</span><span class="s1">&#39;Called On V/H&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">==</span><span class="s1">&#39;V&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">penalties</span> <span class="ow">in</span> <span class="n">by_ref</span><span class="p">]</span>
+<span class="n">homes_y</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">penalties</span><span class="p">[</span><span class="s1">&#39;Called On V/H&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">==</span><span class="s1">&#39;H&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">penalties</span> <span class="ow">in</span> <span class="n">by_ref</span><span class="p">]</span>
 <span class="n">aways_x</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">-.</span><span class="mi">012</span>  <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">]</span>
 <span class="n">homes_x</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">+.</span><span class="mi">012</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">]</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">homes_x</span><span class="p">,</span> <span class="n">homes_y</span><span class="p">,</span> <span class="n">width</span><span class="o">=.</span><span class="mi">019</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Home&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightcoral&#39;</span><span class="p">)</span>
@@ -15734,6 +15747,8 @@ div#notebook {
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Amount of Penalties Called on Away vs Home Team (by Ref)&#39;</span><span class="p">)</span>
+
+<span class="kc">None</span>
 </pre></div>
 
     </div>
@@ -15743,19 +15758,6 @@ div#notebook {
 <div class="output_wrapper">
 <div class="output">
 
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[&nbsp;]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>Text(0.5, 1.0, &#39;Amount of Penalties Called on Away vs Home Team (by Ref)&#39;)</pre>
-</div>
-
-</div>
 
 <div class="output_area">
 
@@ -15771,6 +15773,141 @@ div#notebook {
 
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Using an aggregate function such as groupby will often give you much more meaningful data.</p>
+<p>But, looking at this bargraph, again nothing looks to be out of the ordinary. So let's look at something else. Lets look at team wins vs penalties called.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">by_team</span> <span class="o">=</span> <span class="n">penalty_frame</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Called On&#39;</span><span class="p">)</span>
+<span class="n">team_to_penalties</span> <span class="o">=</span> <span class="p">{</span> <span class="n">k</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">by_team</span> <span class="p">}</span>
+
+<span class="n">by_matchup</span> <span class="o">=</span> <span class="n">gamedata</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;ID&#39;</span><span class="p">)</span>
+<span class="n">wins</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">matchup</span> <span class="ow">in</span> <span class="n">by_matchup</span><span class="p">:</span>
+    <span class="n">v_score</span> <span class="o">=</span> <span class="n">matchup</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">h_score</span> <span class="o">=</span> <span class="n">matchup</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">v_score</span> <span class="o">&gt;</span> <span class="n">h_score</span><span class="p">:</span>
+        <span class="n">wins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">matchup</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">5</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">matchup</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">5</span><span class="p">])</span>
+
+<span class="n">team_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">wins</span><span class="p">)</span>
+<span class="n">team_to_wins</span> <span class="o">=</span> <span class="p">{</span> <span class="n">k</span><span class="p">:</span> <span class="n">wins</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">team_names</span> <span class="p">}</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">team_to_penalties</span><span class="p">[</span><span class="s1">&#39;LA&#39;</span><span class="p">]</span>
+<span class="k">del</span> <span class="n">team_to_penalties</span><span class="p">[</span><span class="s1">&#39;LA&#39;</span><span class="p">]</span>
+<span class="n">team_to_penalties</span><span class="p">[</span><span class="s1">&#39;LAR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+
+<span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">team</span> <span class="ow">in</span> <span class="n">team_names</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">team_to_penalties</span><span class="p">[</span><span class="n">team</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">team_to_wins</span><span class="p">[</span><span class="n">team</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightcoral&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">+.</span><span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="o">+.</span><span class="mi">2</span><span class="p">,</span> <span class="n">team</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+<span class="n">m</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="p">[</span><span class="n">m</span><span class="o">*</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Wins&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Penalties Called&#39;</span><span class="p">)</span>
+
+<span class="kc">None</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA6wAAAK5CAYAAAC7V6PYAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjUuMSwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy/YYfK9AAAACXBIWXMAAAsTAAALEwEAmpwYAABYG0lEQVR4nO3deZhcZZ037k/T6ZCQpSEQAiFIAsjeEENAQdCECCKyDjgQZNOR3WFw3F7GWTK/V1/HcYEZcVBGx2XGCQICTgRRiESDbCYQbMAkbFFAtrB0CNk66f79cSbpNNmTrq7T1fd9XXWl6jmnT32rn1OV/tR5znPqJk2a1B4AAAAoma2qXQAAAACsjcAKAABAKQmsAAAAlJLACgAAQCkJrAAAAJRSn2oXsDG+/vWvZ+TIkdUugy3w5ptvZsCAAdUugwrSx7VPH/cO+rn26ePap49rXy328WOPPZbPfvaza7T3iMA6cuTIzJgxo9plsAWmTZuWcePGVbsMKkgf1z593Dvo59qnj2ufPq59tdjHw4cPX2u7IcEAAACUksAKAABAKQmsAAAAlJLACgAAQCkJrAAAAJSSwAoAAEApCawAAACUksAKAABAKQmsAAAAlJLACgAAQCkJrAAAAJSSwAoAAEApCazARhk4cN3LLr88+dCHDktbW0fb976XDB2ajB6d7LNPcuWVFS4QAICaI7ACW6StLbn55mTo0KX51a86Lzv99GTWrOQ3v0m+8IXkmWeqUiIAAD2UwApskWnTkv33T0488blMnrz2dbbfPtlzz+T557u1NAAAerg+1S4A6NkmT04mTkyGDJmfCy5IWluThobO6/zxj8mSJcmBB1anRgAAeiZHWIHNtmxZctttycknJwMGrMg735n8/Ocdy3/0oyKk7rlncsklSb9+VSsVAIAeyBFWYLP9/OfJ668nTU3JkiXvSltb0r9/cvzxxfLTT0+uvjqZMSM55pjkxBOTnXaqaskAAPQgjrACm23y5OTb307mzUuuu+6+PP10cscdyaJFndcbOzY5++zkX/6lKmUCANBDCazARlm0KBkxouP2//5fcvvtyQc/2LHOgAHJEUckU6as+fOf/Wzy3e8mb7zRfTUDANCzGRIMbJTVr7G60t/8zZptN93Ucf+88zruDx+evPBCl5cFAEANc4QVAACAUhJYAQAAKCWBFQAAgFISWAEAACilik26dMstt2Tu3LkZMGBALr300lXt999/fx544IFstdVWefvb355jjjmmUiUAm2FZc3OWTJ2a9paW1DU2pt+ECenb1FTtsgAA6IUqFlhHjx6dQw89NDfffPOqtqeffjqzZ8/OxRdfnD59+mThwoWVenpgMyxrbs7iKVOS1tYkSXtLS/E4EVoBAOh2FRsSPHLkyPTv379T229/+9scccQR6dOnyMkDBw6s1NMDm2HJ1Kmrwuoqra1FOwAAdLNuvQ7rK6+8kj/+8Y/55S9/mT59+uSYY47JLrvsstZ1Z8yYkZkzZyZJ2traMm3atG6slK62cOFCfdgDrBg2LBk2bK3L6jfQf/q49unj3kE/1z59XPv0ce3rTX3crYG1ra0tixcvzsc+9rE899xzueGGG/JXf/VXqaurW2PdsWPHZuzYsUmSKVOmZNy4cd1ZKl1s2rRp+rAHWHDVVWlvaVmjva6xMYMnTlzvz+rj2qePewf9XPv0ce3Tx7WvN/Vxt84SPHjw4Oy7776pq6vLiBEjUldXl0WLFnVnCcB69JswIWlo6NzY0FC0AwBAN+vWwLrPPvvk6aefTpLMnz8/K1asyDbbbNOdJQDr0bepKf1POCF1jY1JiiOr/U84wYRLAABURcWGBN94442ZN29eFi1alK9+9asZP3583vGOd+QnP/lJvvGNb6S+vj4nn3zyWocDA9XTt6lJQAUAoBQqFlhPO+20tbafeuqplXpKAAAAaki3DgkGAACAjSWwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksALQ67zySjJ6dHHbaadkl106HtfVFf8edFAyZkxyzz1VLZWSGziw4/5ttyV77ZX84Q/JCy8kZ5yR7LFHcvDByXHHJXPnVq9OgJ6qT7ULAIDutv32yaxZxf1Jk4rQ8alPFY8HDuxY9vOfJ1dckfzqV1Uokh5l6tTkssuKfeZtb0sOPzw599zkuuuK5Q8/nLz4YhFoAdh4AisArMOCBcl221W7Csru179Ozj+/OMK6xx7JL3+ZNDQkF13Usc5BB1WvPoCeTGAFgNUsXlwMCV6yJHn++SJ8wLosXZqcfHIybVqyzz5F2yOPFMOAAdhyzmEFgNX0718MCZ49O7n99uScc5L29mpXRVk1NBTDf7/znWpXAlCbBFYAWIfDDkvmz09efrnalVBWW22VXH998sADyf/7f0Xb/vsnM2dWty6AWiGwAsA6zJ6drFhRTNIE67LNNsmttyY//GFxpPWoo4qhwtde27HO736XTJ9evRoBeirnsALAalaew5oUQ4G///2kvr6qJdEDDBlSDCF/z3uSoUOTm29OLr88+dKXkn79kpEjk6uuqnKRAD2QwApArzZpUufHK1ZUpQx6qIULO+7vumvy9NMdj6+/vvvrAag1hgQDAABQSgIrAAAApSSwAgAAUEoCKwAAAKVUsUmXbrnllsydOzcDBgzIpZde2mnZPffck1/84hf59Kc/nQEDBlSqBABIkixrbs6SqVPT3tKSusbG9JswIX2bmqpdFj2IfQigOip2hHX06NE566yz1mhvaWnJk08+mcbGxko9NQCssqy5OYunTEl7S0uSpL2lJYunTMmy5uYqV0ZPYR8CqJ6KBdaRI0emf//+a7TffvvtOfrooyv1tADQyZKpU5PW1s6Nra1FO2wE+xBA9XTrdVhnz56dwYMHZ6eddtrgujNmzMjMmTOTJG1tbZk2bVqFq6OSFi5cqA9rnD6ufT21j1cMG5YMG7bWZfU98PVUWk/t50qqtX1IH9c+fVz7elMfd1tgXbZsWaZPn56zzz57o9YfO3Zsxo4dmySZMmVKxo0bV8HqqLRp06bpwxqnj2tfT+3jBVddtWoo5+rqGhszeOLEKlRUbj21nyup1vYhfVz79HHt60193G2zBL/22mt57bXXcs011+TKK6/MggUL8q1vfStvvPFGd5UAQC/Ub8KEpKGhc2NDQ9EOG8E+BFA93XaEddiwYfnMZz6z6vGVV16ZCy64wCzBAFTUyplczfDK5rIPAVRPxQLrjTfemHnz5mXRokX56le/mvHjx2fMmDGVejoAWKe+TU3CBVvEPgRQHRULrKeddtp6l3/iE5+o1FMDAABQA7rtHFYAAADYFAIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLBWwIsvJmeemey+e3LwwclhhyU335xMm5Y0NiajRycHHpi8733JSy9Vu1roPV54ITnjjGSPPYr35nHHJXPnJgccUCyfNi2pq0umTOn4meOPL9oBAOh+AmsXa29PTj45ec97kqeeSmbOTK67Lnn22WL5kUcms2Ylv/tdcsghyTe+Uc1qofdob09OOSUZNy558snivfnFLxZfMK1uxIjkC1+oSokAALyFwNrFfvnLpG/f5KKLOtp22y35y7/svF57e/LGG8l223VvfdBb3XVX0tDQ+b150EHJrrt2Xu+gg4qREHfc0b31AQCwJoG1iz36aDJmzLqXT59eDAl+29uSO+9MPvrRbisNerVHHimGAW+Mz30u+fznK1sPAAAbJrBW2KWXFkdsDjmkeLxySPAzzyQf+Ujymc9UtTxgLd7znuLfu++ubh0AAL2dwNrF9t8/efDBjsff+EYydWry8strrnviicmvf919tUFvtv/+xXmrG8tRVgCA6hNYu9hRRyVLliTXXNPRtmjR2te9++5itlKg8o46Klm6NLn22o623/2uGO2wNscck7z2WrEOAADVIbB2sbq65JZbkl/9Khk1Kjn00OTcc5MvfalYvvIc1oMOSv7zP5OvfrWa1ULvUVdXXF7qzjuLL4r23z+54opkp53W/TOf+9y6Ay0AAJXXp9oF1KKddy4uZbM2LS3dWwvQYfjw5Prr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Cxcu1Ic1Th/XphXDhiXDhiVJFm29dWbstdeqZfX6u2bo597F53Xt25g+Xv19/1be9+XXm97H3RpYV1dXV5e6urp1Lh87dmzGjh2bJJkyZUrGjRvXTZVRCdOmTdOHNU4f16YFV121arjYjL32yti5c5MkdY2NGTxxYjVLowvp597F53Xt25g+Xv19vzrv+56hN72Pu3WW4IEDB+aNN95IkrzxxhsZMGBAdz49AJuo34QJSUND58aGhqKdmqGfoffxvq9xL72U3HprMmlS8sEPJnfeWe2KNlu3HmHde++9M2vWrBx55JGZNWtW9t577+58egA20crZIlee02QWydqkn6H3Wf19b5bgHmTp0uThhzP85puT7343+e1vk9//fsM/d999ySuvVL6+CqhYYL3xxhszb968LFq0KF/96lczfvz4HHHEEbnhhhvy0EMPpbGxMR/60Icq9fQAdJG+TU3p29SU+mnTDBOrYfoZep+V73tKoL09mTevCKC//W3ywAPFv4sXr3X1vdbaupptt00OPTQ55JDidtRRXVxw96lYYD3ttNPW2n7uuedW6ikBAADKZcGCZObMjhD6298mf/zj5m9v9Oj8acSIDD/ppCKM7r9/0qdqUxNVXO2+MgAAgEpZsaIYjrv6EdH/vcrJZhkxouOI6KGHJgcfXBwpXYu506ZleC+ZdElgBQAAWN2LL645PHdzzwHt27fz8NxDD0123z1ZzxVT6CCwAgAAvcOSJcnDD3cenjt79uZvb6+9OofR0aOT/v27rFwEVgAAoKdrb0+efrrzEdHf/rYIqJtjyJDOR0THjk123rlra2ajCKwAAEB5tbQU54auHkafeWbztzdmTOcwuu++NT1pUU+nZwAAgO63YkXy2GOdj4g++ODmb2/EiM7Dc9czaRE9h8AKAAB0rRdeWHN47quvbt62+vXrfET0kEOSUaNMWtRLbFRg/eMf/5iddtopffv2zcMPP5znn38+73rXu7KtbywAAKD3WLIkmTWrcxidM2fzt7fPPp3D6EEHFQEV/tdGBdaf/vSnufjii/PCCy/k3nvvzZgxY3LzzTfnIx/5SKXrAwAAKq29PXnqqc5HRB94IFm2bPO2N2RI5+G5hxyS7LRT19ZMr7BRgXWrrbZKXV1dZs+enUMPPTRjxozJg1syvhwAAOgef/xj8s1vJldfnbzxxpZv7+CDOw/P3WcfkxZRMRu1Z2299daZPn16fve73+UjH/lI2tra0tbWVunaAACAdVm6NLnhhuTf/i25995VzeM2d3tve1vn4bljxiSNjV1RKWy2jQqsp512Wpqbm3PSSSdl0KBBef3113P44YdXujYAAOidHnywOCL63e927XZPOSX5+MeT8eNNWkSPsFGBddCgQZ0C6rbbbpvRo0dXqiYAAKhNr71WhNCrr06efrrrtrvPPskllyRnn51ps2Zl3LhxXbdtqKKNCqyPPfZY7rzzzrz55ptpb29f1f43f/M3FSsMAAB6jLa25Be/KIbnTpnStdu++OLi1tTUtduFHmCjAusdd9yRM888M0OHDq10PQAAUC5PP51cc00RRt98s+u2e+SRxfDck09O+vbtuu1CDdmowDpw4EBhFQCA2rJkSXL99cXw3N/+tuu2u8MOxfDc889PRozouu1CL7RRgXX48OG54YYbss8++6S+vn5V+3777VexwgAAYLPNmJF84xvJ977Xtdv90IeKMPre95q0CLrBRgXWpUuXpqGhIU8++WSndoEVAIBu9coryX/8RzE8d968rtvuvvsWw3PPOisZPLjrtgtskY0KrCeffHKFywAAoFdra0tuv70Ynvuzn3Xtti+5pJi06IADuna7QMWtN7DefffdOeKII3Lbbbetdflxxx1XkaIAAKghTz1VTFr0jW8kixd33XbHjy/C6EknJQ0NXbddoDTWG1hXrFiRZ599NsOGDet07ioAAOSNN5LPfS75+te7drtDhxbDcz/2sWT48K7dNtCjrDewLlmyJLfffnvmz5+fYcOGZdddd11122abbbqrRgAAutvNNyfnnJMsXNi12/3zP08uvbS4pItJi4ANWG9gff/7358kWb58ef70pz/lmWeeyaxZszJlypT069cvH//4x7ulSAAAusbWL72UnHhiMmVK12/8L/4i+cpXkm237fptA73SVhuz0vLly7N06dIsXbo0S5YsyaBBgzLCNaWqZuDA4t9584ovJlcfhfPxj3fM3n7eecmoUclBByV77VV8Sfrss91cLFA1dXXJJz/Z8fgrX0kmTep4fO21yT77FLdDD03uvrvbS+xR6uqKyUNXWr68GLV4/PHF4+99r/gMXt3o0ckZZ3RXhdVXX1+85gMOKK78sWhR0b7y/62VVv9dTZpU7Js91Vtf2+ouvzzZZZdiLqHV/eAHxe+oqSl5xzu68PW3tiYXXFDsrOu5HXb66ZseVvfcM/nVr5L29vXfvv1tYRXoUus9wvo///M/efnll9O3b9+MGDEiu+66aw477LD079+/u+pjA3bcMfmXf0kuvDDp23fN5V/+cnLaacX/IVddlRx1VPLII2tfF6gtW2+d3HRTcsUVxTXsV/fTnybf+lYRUnfYIXnwweTkk5MHHkh22qkq5ZbegAHF5+fixUn//skddxRhZF1+//tkxYpk+vTkzTeLn691/fsns2YV9z/84eSb30z++q+rWlLVtLUVI2p33bXIeePHF+0/+1nx//EvflGcmrl0aRFgN2jy5OTMMytT7Oc/n3z60/44AEppvUdYW1pasnz58gwcODCDBg3K4MGD069fv+6qjY0wdGgyYULy/e+vf726uuQTnyj+EO3qmeKBcurTpzjYcuWVay770peKL7RWBtkxY5Jzzy0m8GTdjjsuufXW4v7kycnEieted/Lk5Oyzk2OOSX7yk+6pr0yOPDJ54olqV1E906Yl++9fXEll8uSO9i9+sTiiunIeoa1feyHnX9Z/g0dFNyusbr11MnPmGkdBp911V+e2z31OWAVKa72B9eyzz84FF1yQww8/PElyzz335Nprr80PfvCD3HXXXd1SIBv22c8W//mtWLHhdceMSWbPrnxNQDlcemnywx8mLS2d2x99NDn44M5tY8cW7azbGWck112XLFmS/O53yTvfue51f/SjYv2JEzsHlt5g+fLiy9GmpuLx4sXFUOGVt7//+yoW100m/3d7Jrb9MKecNzi3/vtzaa1rSOrq8sj0V3PwhMaOILrzzsUOtakuuaQ4jLu+4blLlhT/8QP0YOsdEpwkdXV1GTZsWPr167fqNnfu3Dz33HMZv3J8C1W1++7FH03//d8bXre9vfL1AOUxeHBx/vq//msxXJMtc+CBxfwBkycXR1vXZcaM4uj1295WDBv+6EeTV19NhgzptlKrYmUwTYojrH/xF8X91YcKJ8U5rDNmdHNxXem3vy1O/E6SvJHUDeq0eFkaclueztdyUQZlYd6Z+/PzvD/H59aN2/4f/1iMJQZg/YH1vvvuyzPPPJNnnnkm9fX1qy5p8453vCM77rhjd9XIRvibvynOVX3ve9e/3kMPFUOIgd7j8suLgywf+UhH2377FSMFjzqqo23mzGII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AADQQ1TlsjYAAACwIQIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAis15xOfSK66quPx+9+ffOxjHY8/+cnka19Lli9Phg5N/s//Serrk9Gjk/33T0aNSnbZJTnooGS//ZK//uuksbFYvvJ2553Fturqiu2t9JWvJJMmVfoVstIttxR9MHt28s53Fn3ztrcV/bqyr+bNS0aOTObPr2alXeMLXyj20QMPLF7b/fcn48Yle+/d8XpPO63zz4wenZxxRreXCgDQJfpUuwDoau9+d3L99cnllydtbUVQWbCgY/k99yRXXpnccUey117JDTck/fols2Ylra3Jrrsme+6ZTJiQ/M3fJD/6UXLkkclPf7rmc229dXLTTckVVyQ77NBdr5CVJk9Ojjii+Pf++4u2730vmTEjufrqqpbW5e69t9gHH3yw2O/mz0+WLSuW/fCHydixa/7M73+frFiRTJ+evPlmMmBA99YMALClHGGl5hx+ePHHfZI8+mhywAHJoEHJa68lS5cWf8SPGVOEnL/6q+KIXFtbsf4bbxT3r722CDx9+xbL16VPn+SCC4oATPdauDC5++7kO99Jrruu2tVU3vPPF1+KbL118XiHHZLhw9f/M5MnJ2efnRxzTPKTn1S+RgCAriawUnOGDy+C5B//WBxNPeywYrjovfcWR96amopQeuedyQknJBMnFsODk2TIkOTEE4thlm+8kVxzTbHu9OmdhwQ/+WTH8116aXGEq6Wl+19rb/aTnyTHHlscJd9++2TmzGpXVFnHHJM880zxei+5JPnVrzqWffjDHfvmpz/d0f6jHxXDgSdOLMIrAEBPY0gwNenww4uwes89xTmozz1X3G9sLIYM//SnyfjxSf/+yamnJhddVAydrK9Pvv3tpLk5OfTQIrDussu6hwQnyeDByTnnJP/6r8X26B4rj5AnRSibPDk5+ODq1lRJAwcWoXz69OSuu5LTT0/+6Z+KZWsbEjxjRnEU9m1vK/bhj340efXV4ksZAICeQmClJr373UVAbW4uhgTvumvy1a8W4fIjH0m+//1iOOnIkcX67e3JL3+ZHH108XjAgGSbbYq23XZLjjpq/c93+eXFMOOPfKSSr4qVXn216Jvm5mLSpRUrin+//OVqV1ZZ9fXF0f9x44qRAt///rrXnTy5mIxq5T6+YEHy4x8n55/fDYUCAHQRQ4KpSYcfXhwRHTKk+CN/yJDk9deLYcGjRxdHqf74x2IG2XnzinNVJ08uzou85ZbiiOvHP548/HAybNiGn2/IkOTP/7w4n5LKu/HG4tzMP/yh6L9nnilmd54+vdqVVc6cOcnjj3c8njWr+DJlbdraionHmps79vGf/MSwYACg5xFYqUlNTcUsqu96V+e2xsZiOOVRR3VMXpMUswP/4AfFsMpzzinCwE9+kvzDPxSXvXnrOaw33rjmc37yk7Vx6ZSeYPLk5JRTOredeur6A9mBByYjRhS3v/7rytZXCQsXJueeW1xq6cADk8ce67iE0urnsL7vfcX+ussunSdles97ip95/vkqFA8AsJkMCaYm1dd3vpRNUlzuZKVzz+28bOUswety4YVrb1+4sOP+sGHJokUbXSJb4K671my77LKO++ed13nZvHmVrKZ7HHxwMcz9raZNW/v6993X+XF9ffLCC11eFgBARTnCCgAAQCkJrAAAAJSSwAoAAEApCawAAACUksAKAABAKZklmB5tWXNzlkydmvaWltQ1NqbfhAnp29TU5T9DdfW2PuttrxcAYF0EVnqsZc3NWTxlSnER1STtLS3F42Sdf9xvzs9QXb2tz3rb6wUAWB9DgumxlkyduuqP+lVaW4v2LvwZqqu39Vlve70AAOsjsNJjtbe0bFL75v4M1dXb+qy3vV4AgPURWOmx6hobN6l9c3+G6uptfdbbXi8AwPoIrPRY/SZMSBoaOjc2NBTtXfgzVFdv67Pe9noBANbHpEv0WCsnoNmU2VQ352eort7WZ73t9QIArI/ASo/Wt6lpk/+Q35yfobp6W5/1ttcLALAuhgQDAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACAABQSgIrAAAApSSwAgAAUEoCKwAAAKUksAIAAFBKAisAAAClJLACQIW88EJyxhnJHnskBx+cHHdcMnducsABndebNCn5yleK++edl9x4Y3dXCgDl1KfaBQBALWpvT045JTn33OS664q2hx9OXnyxunUBQE/iCCsAVMBddyUNDclFF3W0HXRQsuuu1asJAHoaR1gBoAIeeaQYBrw2Tz6ZjB7d8fiFF5JPfapbygKAHkVgBYButsceyaxZHY8nTapWJQBQboYEA0AF7L9/MnNmtasAgJ5NYAWACjjqqGTp0uTaazvafve75JlnqlcTAPQ0AisAVEBdXXLzzcmddxZDgPffP7niimSnnapdGQD0HM5hBYAKGT48uf76NdsfeaTz49XPYf3e9ypZEQD0LI6wAgAAUEoCKwAAAKUksAIAAFBKAisAAAClVJVJlxYvXpz/+Z//yUsvvZS6urqcdNJJ2XXXXatRCgBssWXNzVkydWraW1pS19iYfhMmpG9TU7XLAoAeryqB9fbbb8+ee+6Z008/PcuXL09ra2s1ygCALbasuTmLp0xJ/vf/svaWluJxIrQCwBbq9iHBS5YsyR/+8IeMGTMmSdKnT5/079+/u8sAgC6xZOrUVWF1ldbWoh0A2CJ1kyZNau/OJ3z++eczZcqUDB06NC+++GJ23nnnfOADH0jfvn07rTdjxozMnDkzSdLW1pbrrruuO8ukiy1cuDADBw6sdhlUkD6uffp47VY8//w6l9XvvHM3VtI19HPt08e1Tx/Xvlrs4zPPPDMXXnjhGu3dPiS4ra0tzz//fI477riMGDEiP/vZz3L33XfnqKOO6rTe2LFjM3bs2CTJlClTMm7cuO4ulS40bdo0fVjj9HHt08drt+Cqq9Le0rJGe11jYwZPnFiFiraMfq59+rj26ePa15v6uNuHBA8ePDiDBw/OiBEjkiT77bdfnl/Pt9MAUGb9JkxIGho6NzY0FO0AwBbp9sA6aNCgNDY2Zv78+UmSp556KkOHDu3uMgCgS/Rtakr/E05IXWNjkuLIav8TTjDhEgB0garMEvyBD3wgP/7xj7NixYpst912Ofnkk6tRBgB0ib5NTQIqAFRAVQLrzjvvvNYTagEAAGClbh8SDAAAABtDYAUAAKCUBFYAAABKSWAFAACglARWAAAASklgBQAAoJQEVgAAAEpJYAUAAKCUBFYAAABKSWAFAACglARWAAAASklgBQAAoJQEVgAAAEpJYAUAAKCUBFYAAABKSWAFAACglARWAAAASklgBQAAoJQEVgAAAEpJYAUAAKCUBFYAAABKSWAFAACglARWAAAASklgBQAAoJQEVgAoiRdeSM44I9ljj+Tgg5Pjjkvmzi2WXXVV0q9f0tLSsf60aUljYzJ6dLLPPsmnPlWFogGgggRWACiB9vbklFOSceOSJ59MZs5MvvjF5MUXi+WTJyeHHJLcdFPnnzvyyGTWrOShh5Kf/jT5zW+6u3IAqByBFQBK4K67koaG5KKLOtoOOqgIpE8+mSxcmHz+80VwXZv+/Ysjrc891y3lAkC3EFgBoAQeeaQYBrw2111XDBU+8shkzpyOo66re+215PHHk/e8p7J1AkB3ElgBoOQmTy4C61ZbJaeemtxwQ8ey6dOLI7G77JK8//3JTjtVr04A6GoCKwCUwP77F+etvlVzc3Hk9Oijk5Eji6Otqw8LPvLI5OGHk0cfTb7zneJ8VgCoFQIrAJTAUUclS5cm117b0fa73yWXXZZMmpTMm1fc/vSn4vaHP3T++VGjkv/zf5IvfakbiwaAChNYAaAE6uqSm29O7ryzuKzN/vsnV1xRXLrmlFM6r3vKKcWR1re66KLk178ugi0A1II+1S4AACgMH55cf/2G1/va1zrujxvXcb9/f7MEA1BbHGEFAACglARWAAAASklgBQAAoJQEVgAAAErJpEsA0M2WNTdnydSpaW9pSV1jY/pNmJC+TU3VLgsASkdgBYButKy5OYunTElaW5Mk7S0txeNEaAWAtzAkGAC60ZKpU1eF1VVaW4t2AKATgRUAulF7S8smtQNAbyawAkA3qmts3KR2AOjNBFYA6Eb9JkxIGho6NzY0FO0AQCcmXQKAbrRyYiWzBAPAhgmsANDN+jY1CagAsBEMCQYAAKCUBFYAAABKSWAFAACglARWAAAASklgBQAAoJQEVgAAAEpJYAUAAKCUBFYAAABKSWAFAACglARWAAAASklgBQAAoJQEVgAAAEpJYAUAAKCUBFYAAABKSWAFAACglARWAAAASklgBQAAoJQEVgAAAEpJYAUAAKCUBFYAAABKSWAFAACglARWAAAASklgBQAAoJQEVgAAAEpJYIVeqq4u+eQnOx5/5SvJpEnJHXckhx2WtLcX7StWJO94R3LPPcXj//qv5MADk/33Tw46KPnYx5LXX+/u6ukNNmcfnTSpWA9WGjiw8+PvfS/5+Mc7Hl97bbLPPsXt0EOTu+/uWDZyZDJ/fsfjadOS44+vYLEArEFghV5q662Tm27q/MdYkhx9dLLbbsl3vlM8/vrXk7Fjk8MPT26/PbnyyuRnP0sefTR58MGi/cUXu79+at/m7KOwKX760+Rb3ypC6uzZyTe/mZx5ZvLCC9WuDICVBFbopfr0SS64oAigb3XllckXv1iE0quvTr70paL9C18ojl7tskvxuL4++ehHk7337r666T02Zx+FTfGlLyVf/nKyww7F4zFjknPPTb7xjerWBUAHgRV6sUsvTX74w6SlpXP7zjsnl19eDLv8279Nhgwp2h99tPiDDrrLpu6j8FaLFyejR3fc/v7vO5Y9+mhy8MGd1x87tmgHoBwEVujFBg9Ozjkn+dd/XXPZpZcW5waed97af7a5ufjjb489kh/9qJJV0pttyT4KSdK/fzJrVsft//v/Nv5n6+o2rg2AyhFYoZe7/PLiXMA33+zcvtVWa/5htv/+xXmrSdLUVPzx94EPFEcwoFI2ZR+FTbHffsnMmZ3bZs4sPuuSZPvtk9de61j26qsdw4cB6B4CK/RyQ4Ykf/7nHRPYrM8VVySf+lTy7LMdbcIqlbYp+yhsis98JvnsZ5NXXikez5pVzCJ8ySXF43Hjkv/8z+L+ihXFLOnjx1ehUIBerE+1CwCq75OfLCau2ZDjjktefrk4qrpiRbLttskBByTvf38yZ07Fy6QX29h9dPnyYnZh2Bgnnpg891wxw3RdXTJoUBFKd965WP53f5dcfHFxCa/29uTYY5OzzqpuzQC9jcAKvdTChR33hw1LFi1a/zornXtucXsrgZWutjn76KOPurwNnb11HznvvM7nPV98cXFbm8bG5L//u1KVAbAxDAkGoCY0NRXntR5zTLUrAQC6iiOsANSE5uZqVwAAdDVHWAEAACglgRUAAIBSqlpgbWtryze/+c388Ic/rFYJAAAAlFjVzmG97777ssMOO2Tp0qXVKgF6hWXNzVkydWraW1pS19iYfhMmpG9TU7XLgk7sp2wp+xBAbarKEdaWlpY8/vjjGTNmTDWeHnqNZc3NWTxlStpbWpIk7S0tWTxlSpaZnYYSsZ+ypexDALWrKoH19ttvz9FHH526urpqPD30GkumTk1aWzs3trYW7VAS9lO2lH0IoHZ1+5DgOXPmZMCAARk+fHiefvrpda43Y8aMzJw5M0lxvuu0adO6qUIqYeHChfqwClYMG5YMG7bWZfVd3B/6uPZVqo+7cz9lw3rie9k+tGl6Yh+zafRx7etNfdztgfWZZ57JnDlz8vjjj2f58uVZunRpfvzjH+fUU0/ttN7YsWMzduzYJMmUKVMybty47i6VLjRt2jR9WAULrrpq1RC51dU1NmbwxIld+lz6uPZVqo+7cz9lw3rie9k+tGl6Yh+zafRx7etNfdztgfV973tf3ve+9yVJnn766dxzzz1rhFWga/SbMCGLp0zpPFSuoSH9JkyoXlHwFvZTtpR9CKB2VW2WYKDyVs6QaeZMysx+ypayDwHUrqoG1lGjRmXUqFHVLAFqXt+mJn+0UXr2U7aUfQigNlVllmAAAADYEIEVAACAUhJYAQAAKCWBFQAAgFISWAEAACglgRUAAIBSElgBAAAoJYEVAACAUhJYAQAAKCWBFQAAgFISWAEAACglgRUAAIBSElgBAAAoJYEVAACAUhJYAQAAKCWBFQAAgFISWAEAACglgRUAAIBSElgBAAAoJYEVAACAUhJYAQAAKCWBFQAAgFISWAEAACglgRUAAIBSElgB6LUGDuy4f/nlyS67JG1tHW1f+1ry0Y8W9+vrk912SwYNSg46KPnqVzvWnTYtaWxMRo/uuP3oRx33d9qp2PbKx8uWVfylAUBN6FPtAgCg2trakptvTnbdNfnVr5Lx44v2yy5Lxo5NfvObpH//ZKutkocfLoLumWcmCxYk//iPxbpHHpn89Kedt3v66cW/kyYVP/OpT3XbSwKAmuAIKwC93rRpyf77JxdfnEye3NHep0/yb/+WXHppsnRpcbR1992THXdMrr02ufrqpL29amUDQM0TWAHo9SZPTiZOTE45Jbn11qS1tWPZ4Ycn++6brFiRfOYzHe277160vfRS8Xj69M5Dgp98shtfAADUKIEVgF5t2bLkttuSk09OBg9O3vnO5Oc/71i+cGEyY0Zx/+WX172dI49MZs3quO2xR+VqBoDeQmAFoFf7+c+T119PmpqSkSOTu+/uPCz4H/4hOeuspG/f5BOf6Gh/6qliIqYdd+zuigGg9xBYAejVJk9Ovv3tZN684vb008kddySLFiXNzcUQ4c9+tjifdd68YtnLLycXXZR8/ONJXV2VXwAA1DCBFYBeafnypKEhuf325IMf7GgfMCA54ohkypRiEqYrr0z69UsWL05aWpLjj08mTEiOOaY4+rrSW89hvfHGbn5BAFCDXNYGgF7p0UeTt789eeCBNZfddFPx78rL0iTFBEvrMm5cEWbXZdKkzakQAHCEFYBe55vfLGYF/vznq10JALA+jrAC0OtcdFFxAwDKzRFWAAAASklgBQAAoJQMCQag5i1rbs6SqVPT3tKSusbG9JswIX2bmrpsfQCgMgRWAGrasubmLJ4yJWltTZK0t7QUj5O1htBNXR8AqBxDggGoaUumTl0VPldpbS3au2B9AKByBFYAalr7Oi6Q2lXtAEDlCKwA1LS6xsaKtgMAlSOwAlDT+k2YkDQ0dG5saCjau2B9AKByTLoEQE1bOVHSxs76u6nrAwCVI7ACUPP6NjVtUuDc1PUBgMowJBgAAIBSElgBAAAoJYEVAACAUhJYAQAAKCWBFQAAgFISWAEAACglgRUAAIBSElgBAAAoJYEVAACAUhJYAQAAKCWBFQAAgFISWAEAACglgRUAAIBSElgBAAAoJYEVAACAUhJYAQAAKCWBFQAAgFISWAEAACglgRUAAIBSElgBAAAoJYEVAACAUhJYAQAAKCWBFQAAgFISWAEAACglgRUAAIBS6lPtAjbGY489luHDh1e7DLbAokWLss0221S7DCpIH9c+fdw76Ofap49rnz6ufbXYx6+//vpa23tEYP3sZz9b7RLYQt/61rdy4YUXVrsMKkgf1z593Dvo59qnj2ufPq59vamPDQkGAACglARWAAAASklgpVscfPDB1S6BCtPHtU8f9w76ufbp49qnj2tfb+rjukmTJrVXuwgAAAB4K0dYAQAAKCWBFQAAgFLqEZe1oee599578+CDDyZJhg0blpNOOikLFy7MjTfemEWLFmX48OE55ZRT0qePXbCnuu+++zJz5swkyZgxY3LYYYdl0aJFufHGG/P6669n2223zYc+9KH079+/ypWysW655ZbMnTs3AwYMyKWXXpok6+zT9vb2/OxnP8vjjz+ehoaGnHzyya6X3QOsrY8fffTRTJs2LS+//HLOP//87LLLLqvWnz59eh588MFstdVW+cAHPpA999yzWqWzkdbWx7/4xS8yZ86c1NfXZ8iQITnppJNWfTbr455pbf38y1/+MrNnz05dXV0GDBiQk08+OYMHD/Z53UOtrY9Xuueee/KLX/win/70pzNgwICa72NHWOlyCxYsyP33358LLrggl156adra2vLII4/kjjvuyLve9a781V/9Vfr165eHHnqo2qWymV588cXMnDkz559/fi666KLMnTs3r7zySu6+++6MGjUql112WUaNGpW777672qWyCUaPHp2zzjqrU9u6+vTxxx/Pq6++mssuuywnnHBCbr311mqUzCZaWx/vuOOOOf3007Pbbrt1an/ppZfyyCOP5NJLL81ZZ52VW2+9NW1tbd1ZLpthbX28++6755JLLskll1yS7bffftX7WB/3XGvr58MPPzyXXHJJLr744uy111751a9+lcTndU+1tj5OkpaWljz55JNpbGxc1VbrfSywUhFtbW1pbW3NihUr0tramkGDBuXpp5/Ofvvtl6R4E86ePbvKVbK55s+fnxEjRqRv376pr6/PyJEj8/vf/z5z5szJ6NGjk+jjnmjkyJFrHBFfV5/OmTMnBx10UOrq6rLrrrtmyZIleeONN7q7ZDbR2vp46NCh2WGHHdZYd86cOTnggAPSp0+fbLfddhkyZEiee+657iqVzbS2Pt5zzz1TX1+fJBkxYkQWLFiQRB/3ZGvr5379+q2639ramrq6uiQ+r3uqtfVxktx+++05+uijO7XVeh8bj0mXGzx4cA4//PBceeWVaWhoyB577JGdd945/fr1W/Uf5uDBg1f9h0nPs+OOO2bq1KlZtGhR+vTpk8cffzzDhw/PwoULM2jQoCTJwIEDs3DhwipXypZaV58uWLAggwcPXrXeyvf0ynXp+RYsWJARI0aseuxzuzY89NBD2X///ZPo41o0derUPPzww9l6661z3nnnJfF5XUtmz56dwYMHZ6eddurUXut9LLDS5RYvXpzZs2fn8ssvT79+/XL99dfniSeeqHZZdKGhQ4fmiCOOyH/+53+moaEhO+2006pvcleqq6tbo42eTZ9Cz/brX/86W221VQ488MBql0KFTJgwIRMmTMj06dPzwAMPZPz48dUuiS6ybNmyTJ8+PWeffXa1S+l2hgTT5Z566qlst912GTBgQOrr67PvvvvmmWeeyZIlS7JixYoka34TRM8zZsyYXHjhhfnoRz+afv36Zfvtt8/AgQNXDUF54403MmDAgCpXyZZaV5++9UiM93Tt0ce15aGHHsrcuXPzZ3/2Z6u+eNLHtaupqSmPPfZYEv1cK1577bW89tprueaaa3LllVdmwYIF+da3vpU33nij5vtYYKXLNTY25tlnn82yZcvS3t6ep59+OkOHDs2oUaNWfXjOmjUre++9d5UrZUusHBr6+uuv5/e//32ampqy9957Z9asWUn0ca1YV5/uvffeefjhh9Pe3p5nnnkmW2+9dc0MPaKw995755FHHsny5cvz2muv5ZVXXuk0gzA9x+OPP57f/OY3mThxYvr27buqXR/XlldeeWXV/Tlz5qw6N93ndW0YNmxYPvOZz+QTn/hEPvGJT2Tw4MG58MILM2jQoJrv47pJkya1V7sIas9dd92VRx55JFtttVV23nnnnHjiiVmwYEFuvPHGLF68ODvvvHP+7M/+zGVterD/+I//yKJFi1JfX5/3v//92X333bNo0aLccMMNaWlpSWNjYz70oQ9lm222qXapbKQbb7wx8+bNy6JFizJgwICMHz8+++yzz1r7tL29PbfddlueeOKJNDQ05KSTTvKHbg+wtj7u379/brvttixatCj9+vXLTjvttGrI2a9//es89NBD2WqrrXLsscfm7W9/e5VfARuytj6ePn16VqxYsWoClxEjRuSEE05Ioo97qrX18+OPP5758+enrq4u2267bY4//vhVl7Xxed3zrK2Px4wZs2r5lVdemQsuuGDVZW1quY8FVgAAAErJkGAAAABKSWAFAACglARWAAAASklgBQAAoJQEVgAAAEpJYAWg1/rHf/zHXHPNNfnGN76R66+/PsuWLevS7X/3u9/Nc889l6S4fMjqvv3tb3fJc/zmN7/J17/+9VxzzTW59tprV103d11uvvnmPProo2vUtzGefvrp/PCHP9yScgFgk7gIJgC9Vp8+fXLxxRcnSX784x9nxowZOfzwwyvyXNOnT8973vOeVY8/9rGPbfE2f/vb3+app57K+eefn379+mXJkiWZPXv2Fm8XAMpCYAWAJG9729vy4osvZtmyZbntttvy0ksvpa2tLePGjcs+++yThx56KHPmzElra2tee+217LPPPjnmmGOSJD/96U/z3HPPZfny5dlvv/0yfvz4Ttu+4447snz58lxzzTXZcccdc+qpp+YLX/hCPve5zyUpjpI++uijWb58efbdd9+MHz8+y5Ytyw033JAFCxakra0t733ve3PAAQd02u706dNz3nnnpV+/fkmSfv36ZfTo0UmSadOmZe7cuWltbc2uu+6aE044IXV1det8/U888USmTZuW5cuXZ8iQITnppJOy9dZb5/HHH8/tt9+ehoaGvO1tb+uqXzcAbBSBFYBeb8WKFXniiSey55575te//nVGjRqVk08+OYsXL86///u/Z/fdd0+SvPDCC7noootSX1+fq6++Ou985zvT2NiYo446Kttss03a2try/e9/Py+88EJ22mmnVds/+uij88ADD6w6mru6J554Iq+88krOP//8tLe3Z/LkyZk3b14WLVqUQYMG5cMf/nCSZMmSJZ1+bsmSJVm2bFmGDBmy1td06KGHZty4cUmSm266KXPnzs3ee++91nXffPPN/PrXv84555yTvn375u677869996bd7/73ZkyZUrOPffcDBkyJDfccMMm/24BYEsIrAD0WiuPeibJbrvtlne84x35zne+kzlz5uSee+5ZtU5LS0uSZPfdd191NHPo0KF5/fXX09jYmEcffTQzZ85MW1tbFi5cmJdffrlTYF2fJ598Mk8++WS++c1vJkmWLVuWV199NW9729vy85//PHfccUf22muv7Lbbbpv02ubNm5ff/OY3aW1tzeLFizN06NB1BtZnn302L7/8cr7zne8kKQL8rrvumvnz52fbbbfN9ttvnyQ58MADM3PmzE2qAwC2hMAKQK+1+jmsqzv99NOzww47dGp79tlnU19fv+pxXV1d2tra8tprr+Wee+7JBRdckP79++fmm2/O8uXLN6mOI488MmPHjl2j/cILL8zjjz+eX/7ylxk1atSqI6ZJMfy3b9++efXVV9c4ytra2ppbb701F1xwQRobG3PXXXdtsKY99tgjp512Wqe2559/fpNeBwB0NbMEA8Bq9thjj9x///1pb29PsuHQtnTp0vTt2zdbb711Fi5cmCeeeGKt69XX12fFihVrfb6HHnooS5cuTZIsWLAgCxcuzIIFC9LQ0JCDDjoohx9++FrrOOKII3LbbbetGi68dOnSzJo1a1U43WabbbJ06dI89thj630NI0aMyB//+Me88sorSYqjvPPnz88OO+yQ119/Pa+++mqS5JFHHlnvdgCgqznCCgCree9735vbb78911xzTdrb27PtttuuOo90bXbaaafstNNOufrqq9PY2Jhdd911resdfPDBueaaa7Lzzjvn1FNPXdW+5557Zv78+auG4/bt2zd/9md/lldffTW/+MUvUldXl/r6+nzwgx9cY5uHHHJIli1bln//93/PVlttlfr6+hx22GHp379/xowZk3/7t3/LwIEDs8suu6z3NQ8YMCAnn3xyfvzjH68Ku0cddVR22GGHnHDCCfnhD3+YhoaG7LbbbquCNQB0h7pJkya1V7sIAAAAeCtDggEAACglgRUAAIBSElgBAAAoJYEVAACAUhJYAQAAKCWBFQAAgFISWAEAACil/x+Q/n+HliFefgAAAABJRU5ErkJggg=="
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After creating the scatter plot, and fitting the plot with a numpy fitted linear regression line. As we look at the graph, we see something somewhat unexpected - as your team gets more penalties called on them, your team is expected to win more. However, this is where critical thinking comes into play in Data Science. The gamedata table includes information on games not just in the regular season, but in the playoffs as well, so those teams in the playoffs are getting more penalties called against them than other teams, and getting more wins as well. To adjust for this, we have to use a more reliable variable - win percentage would be a better gauge.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">matchup</span> <span class="ow">in</span> <span class="n">by_matchup</span><span class="p">:</span>
+    <span class="n">v_score</span> <span class="o">=</span> <span class="n">matchup</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">h_score</span> <span class="o">=</span> <span class="n">matchup</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">v_score</span> <span class="o">&gt;</span> <span class="n">h_score</span><span class="p">:</span>
+        <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">matchup</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">5</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">matchup</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">5</span><span class="p">])</span>
+
+<span class="n">team_to_non_wins</span> <span class="o">=</span> <span class="p">{</span> <span class="n">k</span><span class="p">:</span> <span class="n">losses</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">team_names</span> <span class="p">}</span>
+<span class="c1"># we can not call it losses, as a tie is included in this metric</span>
+<span class="c1"># this will still be conducive to calculating wins/games-played though</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+
+<span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">team</span> <span class="ow">in</span> <span class="n">team_names</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">team_to_penalties</span><span class="p">[</span><span class="n">team</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">team_to_wins</span><span class="p">[</span><span class="n">team</span><span class="p">])</span> <span class="o">/</span>  <span class="n">team_to_wins</span><span class="p">[</span><span class="n">team</span><span class="p">]</span> <span class="o">+</span> <span class="n">team_to_non_wins</span><span class="p">[</span><span class="n">team</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightcoral&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">+.</span><span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="o">+.</span><span class="mi">2</span><span class="p">,</span> <span class="n">team</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+<span class="n">m</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="p">[</span><span class="n">m</span><span class="o">*</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Wins&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Penalties Called&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
